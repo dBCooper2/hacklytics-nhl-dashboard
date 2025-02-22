@@ -176,3 +176,7 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+notebooks/nhl_pbp20192020.csv
+notebooks/roster20192020.csv
+notebooks/nhl_pbp20212022.csv
+notebooks/sample_shot_pbp.csv

@@ -12,3 +12,4 @@ seaborn
 streamlit
 plotly
 hockey-rink
+graphdatascience
