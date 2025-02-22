@@ -2,6 +2,9 @@
 .data/
 .DS_Store
 
+# Streamlit Secrets (shhhh)
+.streamlit/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

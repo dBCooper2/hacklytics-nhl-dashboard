@@ -10,3 +10,5 @@ google
 scikit-learn
 seaborn
 streamlit
+plotly
+hockey-rink
