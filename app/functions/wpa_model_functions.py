@@ -9,18 +9,19 @@ from sklearn.metrics import confusion_matrix
 import seaborn as sns
 import plotly.graph_objects as go
 
-# __get_prepped_data()
+# get_prepped_data()
 #  - Accesses Data from Google Drive and Preps it for Models
-#  - Returns a Test-Train Split as a dictionary with key-value pairs:
+#  - Returns a Test-Train Split as a dictionary with key-value pairs along with the original DataFrame for plotting:
 # { 
-#   "x-test" : "X_test",
-#   "y-test" : "Y_test",
-#   "x-train" : "X_train",
-#   "y-train" : "Y_train",
-#   "x-train-res" : "X_train_res",
-#   "y-train-res" : "Y_train_res",
+#   "wp_df" : wp_df
+#   "x-test" : X_test,
+#   "y-test" : Y_test,
+#   "x-train" : X_train,
+#   "y-train" : Y_train,
+#   "x-train-res" : X_train_res,
+#   "y-train-res" : Y_train_res,
 # }
-def __get_prepped_data()->dict:
+def get_prepped_data()->dict:
     # Data Paths :: CHANGE TO GOOGLE DRIVE FOLDER!!!
     pbp_path = '/Users/dB/Documents/repos/github/hacklytics-nhl-dashboard/.data/nhl_pbp20222023.csv'
     shifts_path = '/Users/dB/Documents/repos/github/hacklytics-nhl-dashboard/.data/nhl_shifts20222023.csv'
@@ -78,6 +79,8 @@ def __get_prepped_data()->dict:
     X_train_res, Y_train_res = sm.fit_resample(X_train, Y_train)
 
     res = {
+        'pbp_df':pbp,
+        'wp_df':wp_df,
         'x-test': X_test,
         'y-test': Y_test,
         'x-train': X_train,
@@ -90,35 +93,51 @@ def __get_prepped_data()->dict:
 
 # lr_model(tt_split)
 
-def __lr_model(tt_split: dict):
+def get_lr_model(tt_split: dict):
 
+    x_test = tt_split['x-test']
     x_train_res = tt_split['x-train-res']
     y_train_res = tt_split['y-train-res']
 
     model = LogisticRegression()
     model.fit(x_train_res, y_train_res.values.ravel())
-    Y_pred = model.predict(X_test)
-    Y_pred_proba = model.predict_proba(X_test)[:, 1]
-pass
+    Y_pred = model.predict(x_test)
+    Y_pred_proba = model.predict_proba(x_test)[:, 1]
 
+    res = {
+            'model':model,
+            'y-pred':Y_pred,
+            'y-pred-probs':Y_pred_proba,
+          }
+    
+    return res
 
-# Win Probability :: Logistic Regression Model
+def get_lr_metrics(tt_split: dict, lr_model:dict)->dict:
 
+    Y_test = tt_split['y-test']
+    Y_pred = lr_model['y-pred']
+    Y_pred_proba = lr_model['y-pred-probs']
 
+    # Logistic Regression :: Accuracy
+    lr_accuracy = accuracy_score(Y_test, Y_pred)
+    lr_precision = precision_score(Y_test, Y_pred)
+    lr_recall = recall_score(Y_test, Y_pred)
+    lr_roc_auc = roc_auc_score(Y_test, Y_pred_proba)
 
+    res = {
+        'lr_accuracy':lr_accuracy,
+        'lr_precision':lr_precision,
+        'lr_recall':lr_recall,
+        'lr_roc_auc':lr_roc_auc,
+    }
 
+    return res
 
-
-# Logistic Regression :: Accuracy
-lr_accuracy = accuracy_score(Y_test, Y_pred)
-lr_precision = precision_score(Y_test, Y_pred)
-lr_recall = recall_score(Y_test, Y_pred)
-lr_roc_auc = roc_auc_score(Y_test, Y_pred_proba)
-
+'''
 # Logistic Regression :: ROC Plot and AUC
 fpr, tpr, _ = roc_curve(Y_test, Y_pred_proba)
 plt.figure(figsize=(8,6))
-plt.plot(fpr, tpr, label=f'ROC Curve (AUC = {roc_auc:.4f})')
+plt.plot(fpr, tpr, label=f'ROC Curve (AUC = {lr_roc_auc:.4f})')
 plt.plot([0, 1], [0, 1], linestyle='--', color='gray')
 plt.xlabel('False Positive Rate')
 plt.ylabel('True Positive Rate')
@@ -135,9 +154,4 @@ plt.xlabel("Predicted")
 plt.ylabel("Actual")
 plt.title("Confusion Matrix")
 plt.show()
-
-# Logistic Regression :: Predictions
-wp_df["win_probability"] = model.predict_proba(wp_df.drop(['win', 'p1_name', 'Ev_Team', 'Game_Id'], axis=1))[:, 1]
-
-# Display updated DataFrame with Win Probabilities
-wp_df.head()
+'''
