@@ -9,6 +9,8 @@ from sklearn.metrics import confusion_matrix
 import seaborn as sns
 import plotly.graph_objects as go
 
+from joblib import dump
+
 # get_prepped_data()
 #  - Accesses Data from Google Drive and Preps it for Models
 #  - Returns a Test-Train Split as a dictionary with key-value pairs along with the original DataFrame for plotting:
@@ -101,6 +103,8 @@ def get_lr_model(tt_split: dict):
 
     model = LogisticRegression()
     model.fit(x_train_res, y_train_res.values.ravel())
+
+
     Y_pred = model.predict(x_test)
     Y_pred_proba = model.predict_proba(x_test)[:, 1]
 

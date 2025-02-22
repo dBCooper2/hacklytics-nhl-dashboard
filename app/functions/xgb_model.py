@@ -8,6 +8,8 @@ from sklearn.metrics import confusion_matrix
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+from joblib import dump
+
 # get_prepped_data()
 #  - Accesses Data from Google Drive and Preps it for Models
 #  - Returns a Test-Train Split as a dictionary with key-value pairs along with the original DataFrame for plotting:
@@ -97,6 +99,7 @@ def get_xgboost_model(tt_split:dict):
     
     xgb_model = xgb.XGBClassifier(use_label_encoder=False, eval_metric='logloss', n_estimators=100, max_depth=5, learning_rate=0.1)
     xgb_model.fit(X_train_res, Y_train_res.values.ravel())
+
 
     Y_pred = xgb_model.predict(X_test)
     Y_pred_proba = xgb_model.predict_proba(X_test)[:, 1]

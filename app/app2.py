@@ -4,13 +4,13 @@ import pandas as pd
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_auc_score
-import functions.wpa_model_functions as wpa_mf
+import functions.lr_model as wpa_mf
 
 # Get data and build model
 data_dict = wpa_mf.get_prepped_data()
 wp_df = data_dict['wp_df']
 lr_dict = wpa_mf.get_lr_model(data_dict)
-model = lr_dict['model']
+model = lr_dict['lr-model']
 metrics_dict = wpa_mf.get_lr_metrics(data_dict, lr_dict)
 
 def calculate_win_probability(game_slice, model):
