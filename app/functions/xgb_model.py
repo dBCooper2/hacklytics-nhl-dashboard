@@ -1,13 +1,12 @@
 import numpy as np
 import pandas as pd
+import xgboost as xgb
 from sklearn.model_selection import train_test_split
 from imblearn.over_sampling import SMOTE
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_auc_score, roc_curve
-import matplotlib.pyplot as plt
+from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_auc_score
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
-import plotly.graph_objects as go
+import matplotlib.pyplot as plt
 
 # get_prepped_data()
 #  - Accesses Data from Google Drive and Preps it for Models
@@ -91,67 +90,40 @@ def get_prepped_data()->dict:
 
     return res
 
-# lr_model(tt_split)
-
-def get_lr_model(tt_split: dict):
-
-    x_test = tt_split['x-test']
-    x_train_res = tt_split['x-train-res']
-    y_train_res = tt_split['y-train-res']
-
-    model = LogisticRegression()
-    model.fit(x_train_res, y_train_res.values.ravel())
-    Y_pred = model.predict(x_test)
-    Y_pred_proba = model.predict_proba(x_test)[:, 1]
-
-    res = {
-            'model':model,
-            'y-pred':Y_pred,
-            'y-pred-probs':Y_pred_proba,
-          }
+def get_xgboost_model(tt_split:dict):
+    X_test = tt_split['x-test']
+    X_train_res = tt_split['x-train-res']
+    Y_train_res = tt_split['y-train-res']
     
-    return res
+    xgb_model = xgb.XGBClassifier(use_label_encoder=False, eval_metric='logloss', n_estimators=100, max_depth=5, learning_rate=0.1)
+    xgb_model.fit(X_train_res, Y_train_res.values.ravel())
 
-def get_lr_metrics(tt_split: dict, lr_model:dict)->dict:
-
-    Y_test = tt_split['y-test']
-    Y_pred = lr_model['y-pred']
-    Y_pred_proba = lr_model['y-pred-probs']
-
-    # Logistic Regression :: Accuracy
-    lr_accuracy = accuracy_score(Y_test, Y_pred)
-    lr_precision = precision_score(Y_test, Y_pred)
-    lr_recall = recall_score(Y_test, Y_pred)
-    lr_roc_auc = roc_auc_score(Y_test, Y_pred_proba)
+    Y_pred = xgb_model.predict(X_test)
+    Y_pred_proba = xgb_model.predict_proba(X_test)[:, 1]
 
     res = {
-        'lr_accuracy':lr_accuracy,
-        'lr_precision':lr_precision,
-        'lr_recall':lr_recall,
-        'lr_roc_auc':lr_roc_auc,
+        'xgb-model':xgb_model,
+        'y-pred':Y_pred,
+        'y-pred-probs':Y_pred_proba,
     }
 
     return res
 
-'''
-# Logistic Regression :: ROC Plot and AUC
-fpr, tpr, _ = roc_curve(Y_test, Y_pred_proba)
-plt.figure(figsize=(8,6))
-plt.plot(fpr, tpr, label=f'ROC Curve (AUC = {lr_roc_auc:.4f})')
-plt.plot([0, 1], [0, 1], linestyle='--', color='gray')
-plt.xlabel('False Positive Rate')
-plt.ylabel('True Positive Rate')
-plt.title('Receiver Operating Characteristic (ROC) Curve')
-plt.legend()
-plt.show()
+def get_xgb_metrics(tt_split:dict, xgb_model:dict):
+    Y_test = tt_split['y-test']
+    Y_pred = xgb_model['y-pred']
+    Y_pred_proba = xgb_model['y-pred-probs']
 
-# Logistic Regression :: Confusion Matrix
-cm = confusion_matrix(Y_test, Y_pred)
+    accuracy = accuracy_score(Y_test, Y_pred)
+    precision = precision_score(Y_test, Y_pred)
+    recall = recall_score(Y_test, Y_pred)
+    roc_auc = roc_auc_score(Y_test, Y_pred_proba)
 
-plt.figure(figsize=(6,5))
-sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=["Loss (0)", "Win (1)"], yticklabels=["Loss (0)", "Win (1)"])
-plt.xlabel("Predicted")
-plt.ylabel("Actual")
-plt.title("Confusion Matrix")
-plt.show()
-'''
+    res = {
+        'xgb_accuracy': accuracy,
+        'xgb_precision': precision,
+        'xgb_recall': recall,
+        'xgb_roc_auc':roc_auc,
+    }
+
+    return res
