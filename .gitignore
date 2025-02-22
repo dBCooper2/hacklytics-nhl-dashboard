@@ -1,7 +1,7 @@
 # CSV Files
 .data/
 .DS_Store
-
+data/
 # Streamlit Secrets (shhhh)
 .streamlit/
 
