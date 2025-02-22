@@ -9,3 +9,4 @@ imblearn
 google
 scikit-learn
 seaborn
+streamlit
