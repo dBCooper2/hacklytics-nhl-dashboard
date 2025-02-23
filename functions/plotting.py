@@ -27,6 +27,12 @@ def create_game_visualization(game_events, model, model_type="XGBoost", get_prob
 
     # Create and display animated plot
     fig = create_animated_plot(game_events, model_type)
+
+    fig.update_layout(
+        width=800,  # Adjust width to your preference
+        height=600   # Adjust height to your preference
+    )
+    
     st.plotly_chart(fig, use_container_width=True)
 
     # Display events table
@@ -89,16 +95,17 @@ def create_animated_plot(game_events, model_type):
         )
     fig.frames = frames
 
-    # Calculate x-axis range dynamically
+    # Calculate the range dynamically based on the game events
     min_time = min(game_events["time_remaining"])
-    # Adjust min_time to next lowest multiple of -300 (5 minutes) for clean OT periods
+    max_time = 3600  # Start at 3600 seconds (start of the game)
+    
+    # Adjust min_time to the nearest lower multiple of 300 (5 minutes) for clean OT periods
     if min_time < 0:
         min_time = -300 * (abs(min_time) // 300 + 1)
-    max_time = 3600
 
-    # Create dynamic OT tick values and labels based on min_time
-    base_ticks = [3600, 2700, 1800, 900, 0, -900, -1800]  # Regular time ticks
-    base_labels = ['60:00', '45:00', '30:00', '15:00', '0:00', '15:00OT', '30:00OT']
+    # Create dynamic tick values and labels
+    base_ticks = [3600, 2700, 1800, 900, 0, -900]  # Regular time ticks
+    base_labels = ['75:00','60:00', '45:00', '30:00', '15:00', '0:00']
     
     # Add OT ticks if needed
     if min_time < 0:
@@ -112,16 +119,17 @@ def create_animated_plot(game_events, model_type):
             if current_time % 1200 == 0:  # Every 20 minutes, new OT period
                 ot_period += 1
 
-    # Update layout
+    # Update layout with dynamic range and labels
     fig.update_layout(
         title=f"{model_type} Live Win Probability (Game {game_events['Game_Id'].iloc[0]})",
         xaxis_title="Time Remaining (MM:SS)",
         yaxis_title="Win Probability",
         xaxis=dict(
-            range=[max_time, min_time],
+            range=[max_time, min_time],  # Dynamic range based on game events
             ticktext=base_labels,
             tickvals=base_ticks,
-            tickmode='array'
+            tickmode='array',
+            title_standoff=10
         ),
         yaxis=dict(range=[0, 1]),
         template="plotly_white",
@@ -144,7 +152,7 @@ def create_animated_plot(game_events, model_type):
                          "mode": "immediate",
                          "transition": {"duration": 0}}
                     ],
-                    "label": str(game_events["time_remaining"].iloc[k]),
+                    "label": f"{int(game_events['time_remaining'].iloc[k])}",
                     "method": "animate"
                 } for k in range(len(frames))
             ]
@@ -153,7 +161,7 @@ def create_animated_plot(game_events, model_type):
             "type": "buttons",
             "showactive": False,
             "x": .5,
-            "y": -1.5,
+            "y": -.3,
             "buttons": [
                 {
                     "label": "Play",
@@ -182,8 +190,10 @@ def create_animated_plot(game_events, model_type):
             ]
         }]
     )
-    
+
     return fig
+
+
 
 def display_events_table(game_events, model_type):
     """Display events table with selected columns"""

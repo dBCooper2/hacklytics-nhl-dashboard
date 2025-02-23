@@ -1,7 +1,7 @@
 import streamlit as st
 import time
 import pandas as pd
-import functions.models as wp
+import functions.new_models as wp
 from functions.plotting import create_game_visualization
 
 # Page config
@@ -17,7 +17,8 @@ def load_models_and_data():
     data_dict = wp.get_prepped_data()
     lr_dict = wp.get_lr_model()
     xgb_dict = wp.get_xgb_model()
-    return data_dict, lr_dict, xgb_dict
+    rf_dict = wp.get_rf_model()
+    return data_dict, lr_dict, xgb_dict, rf_dict
 
 # App title
 st.title("NHL Win Probability Models")
@@ -25,10 +26,11 @@ st.title("NHL Win Probability Models")
 try:
     # Load data and models with a loading spinner
     with st.spinner('Loading data and models...'):
-        data_dict, lr_dict, xgb_dict = load_models_and_data()
+        data_dict, lr_dict, xgb_dict, rf_dict = load_models_and_data()
         wp_df = data_dict['wp_df']
         lr_model = lr_dict['lr-model']
         xgb_model = xgb_dict['xgb-model']
+        rf_model = rf_dict['rf-model']
         st.session_state.model_loaded = True
 
     # Game selector
@@ -39,7 +41,7 @@ try:
     game_events = wp_df[wp_df["game_title"] == game_id].sort_values(by="time_remaining", ascending=False)
 
     # Create tabs for different visualizations
-    tab1, tab2 = st.tabs(["XGBoost Model", "Logistic Regression Model"])
+    tab1, tab2, tab3 = st.tabs(["XGBoost Model", "Logistic Regression Model", "Random Forest Model"])
 
     with tab1:
         create_game_visualization(
@@ -55,6 +57,14 @@ try:
             lr_model, 
             "Logistic Regression",
             wp.get_lr_game_probabilities
+        )
+
+    with tab3:
+        create_game_visualization(
+            game_events.copy(),
+            rf_model,
+            "Random Forest",
+            wp.get_rf_game_probabilities
         )
 
 except Exception as e:

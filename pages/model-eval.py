@@ -10,17 +10,20 @@ st.title("Model Evaluation")
 st.header("Logistic Regression")
 
 st.subheader("Model Overview")
+st.markdown("""
+Logistic regression is a simple yet effective model for binary classification tasks. It estimates the probability of an event (home team winning) by fitting a logistic curve to the data. This model was chosen because of its interpretability and ability to model the relationship between the features (e.g., score difference, time remaining) and the probability of the home team winning.
+""")
 st.latex(r"""
 P(Y = 1 | X) = \frac{1}{1 + e^{-(\beta_0 + \sum_{i=1}^{n} \beta_i X_i)}}
 """)
 
 st.subheader("Features Used")
 st.markdown("""
-- **Time Remaining (X₁):** Total seconds elapsed since game start.
-- **Score Difference (X₂):** Home team score - Away team score.
-- **Skater Difference (X₃):** Difference in number of skaters on ice.
-- **Goalie Pulled (X₄):** Indicator if the home goalie is pulled.
-- **Ice Time (X₅):** Total ice time for the key player involved in the play.
+- **Time Remaining (X₁):** Total seconds elapsed since game start, capturing the urgency of the game as it progresses.
+- **Score Difference (X₂):** Home team score minus away team score, directly influencing the likelihood of winning.
+- **Skater Difference (X₃):** Difference in number of skaters on the ice, which affects the chances of scoring.
+- **Goalie Pulled (X₄):** Indicator if the home goalie is pulled, which increases the chance of scoring but also risk.
+- **Ice Time (X₅):** Total ice time for the key player, reflecting fatigue and the likelihood of critical plays.
 """)
 
 st.subheader("Model Evaluation (Logistic Regression)")
@@ -48,7 +51,7 @@ st.header("XGBoost Model")
 
 st.subheader("Model Overview")
 st.markdown("""
-XGBoost is a **gradient boosting** algorithm that builds multiple decision trees sequentially, improving performance at each step.
+XGBoost is a powerful gradient boosting algorithm known for its performance and scalability, particularly with large datasets. It was selected for its ability to model complex relationships in the data, making it ideal for predicting win probabilities in hockey where non-linear interactions between features exist.
 """)
 
 st.subheader("Mathematical Equation")
@@ -61,13 +64,13 @@ st.latex(r"""
 
 st.subheader("Features Used")
 st.markdown("""
-- **Time Remaining (X₁):** Total seconds elapsed since game start.
-- **Score Difference (X₂):** Home team score - Away team score.
-- **Skater Difference (X₃):** Difference in number of skaters on ice.
-- **Goalie Pulled (X₄):** Indicator if the home goalie is pulled.
-- **Power Play (X₅):** Indicator if either team is on a power play.
-- **Goal Difference Last 5 Minutes (X₆):** Average goal difference over the last 5 minutes.
-- **Ice Time (X₇):** Total ice time for the key players involved in the play.
+- **Time Remaining (X₁):** Captures game progression.
+- **Score Difference (X₂):** Reflects the lead in the game.
+- **Skater Difference (X₃):** Indicates power play or penalty kill scenarios.
+- **Goalie Pulled (X₄):** Affects scoring likelihood.
+- **Power Play (X₅):** Affects the advantage during the game.
+- **Goal Difference Last 5 Minutes (X₆):** Captures late-game momentum.
+- **Ice Time (X₇):** Indicates key player fatigue and performance.
 """)
 
 st.subheader("Model Evaluation (XGBoost)")
@@ -95,7 +98,7 @@ st.header("Random Forest Model")
 
 st.subheader("Model Overview")
 st.markdown("""
-Random Forest is an **ensemble learning method** that builds multiple decision trees and averages their predictions to improve accuracy and reduce overfitting.
+Random Forest is an ensemble learning method that constructs a multitude of decision trees, making it robust to overfitting and effective for handling high-dimensional data. It was chosen because it combines the advantages of multiple decision trees while reducing the risk of overfitting, making it ideal for a diverse set of features in hockey game data.
 """)
 
 st.subheader("Mathematical Equation")
@@ -105,12 +108,12 @@ st.latex(r"""
 
 st.subheader("Features Used")
 st.markdown("""
-- **Time Remaining (X₁):** Total seconds elapsed since game start.
-- **Score Difference (X₂):** Home team score - Away team score.
-- **Skater Difference (X₃):** Difference in number of skaters on ice.
-- **Goalie Pulled (X₄):** Indicator if the home goalie is pulled.
-- **Power Play (X₅):** Indicator if either team is on a power play.
-- **Ice Time (X₆):** Total ice time for the key player involved in the play.
+- **Time Remaining (X₁):** Game progression impacts strategy.
+- **Score Difference (X₂):** Directly influences the likelihood of victory.
+- **Skater Difference (X₃):** Reveals situations like power plays or penalties.
+- **Goalie Pulled (X₄):** Critical late-game factor.
+- **Power Play (X₅):** Evaluates team advantage during power plays.
+- **Ice Time (X₆):** Indicates key player fatigue or strength.
 """)
 
 st.subheader("Model Evaluation (Random Forest)")

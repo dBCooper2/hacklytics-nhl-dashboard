@@ -202,3 +202,7 @@ def get_xgb_game_probabilities(game_events, model):
         prob = calculate_xgb_probability(current_slice, model)[0]
         probabilities.append(prob)
     return probabilities
+
+def get_rf_model():
+    pass
+

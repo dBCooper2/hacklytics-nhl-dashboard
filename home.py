@@ -7,9 +7,8 @@ st.set_page_config(
 )
 
 st.title('GrittyStats')
-st.subheader('NHL Statistics and Data Analysis')
-
-st.markdown("""<hr>""",unsafe_allow_html=True)
+st.subheader('NHL Win Probability and Graph Analytics, Powered by Python, AWS s3 and Streamlit')
+st.text('Trevor Rowland, Shake Menothu, Anirudh Arunkumar')
 
 col1, col2, col3, col4, col5 = st.columns([.5,1,1,1,.5])
 col6, col7, col8, col9 = st.columns([1,1,1,1])
@@ -38,6 +37,9 @@ with col8:
         st.switch_page('pages/data-dict.py')
 with col9:
     pass
+
+# st.image('https://raw.githubusercontent.com/dBCooper2/hacklytics-nhl-dashboard/main/site-design/gritty-no-bg.png')
+st.image('/Users/dB/Documents/repos/github/hacklytics-nhl-dashboard/site-design/gritty-no-bg2.png')
 
 
 
