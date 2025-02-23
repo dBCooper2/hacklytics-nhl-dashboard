@@ -10,13 +10,17 @@ def download_models():
     # LR Model Download
     lr_file_id = "11BMLszgKfN1_DFucS6Ihzlz4b6J3IdMT"
     lr_url = f"https://drive.google.com/uc?id={lr_file_id}"
-    gdown.download(lr_url, "logistic_model.pkl", quiet=False)
+    gdown.download(lr_url, "prod/models/logistic_model.pkl", quiet=False)
     
     # XGBoost Model Download
-
     xgb_file_id = "1lN_wSnZ6IIr000904ARoDtLuPzAplygE"  # Replace with your XGBoost model file ID
     xgb_url = f"https://drive.google.com/uc?id={xgb_file_id}"
-    gdown.download(xgb_url, "xgboost_model.pkl", quiet=False)
+    gdown.download(xgb_url, "prod/models/xgboost_model.pkl", quiet=False)
+
+    # Random Forest
+    rf_file_id = "1uwSZFJbJl0wE6gCN1sASikMZ1RnhdRQ4"  # Replace with your XGBoost model file ID
+    rf_url = f"https://drive.google.com/uc?id={rf_file_id}"
+    gdown.download(rf_url, "prod/models/rf_model.pkl", quiet=False)
 
 def get_prepped_data()->dict:
     """
@@ -78,7 +82,7 @@ def get_prepped_data()->dict:
     pbp['time_remaining'] = 3600 - pbp['total_seconds_elapsed'].apply(lambda x: 3600 - x if x >= 3600 else -(x-3600))
     
     # Calculate Features
-    pbp['score_diff'] = pbp['Home_Score'] - pbp['Away_Score']
+    pbp['score_diff'] = pbp['home_max_goal'] - pbp['away_max_goal']
     pbp['skater_diff'] = pbp['Home_Players'] - pbp['Away_Players']
     pbp['goalie_pulled'] = np.where(pbp['Home_Players'] < 5, 1, 0)
     pbp['power_play'] = np.where((pbp['Home_Players'] > pbp['Away_Players']) | (pbp['Away_Players'] > pbp['Home_Players']), 1, 0)

@@ -51,7 +51,7 @@ def display_game_stats(game_events):
                 f"{game_events['score_diff'].iloc[-1]}")
 
 def create_animated_plot(game_events, model_type):
-    """Create animated plotly figure for win probability with overtime support"""
+    """Create animated plotly figure for win probability with fixed overtime support"""
     fig = go.Figure()
 
     # Set color based on model type
@@ -91,21 +91,45 @@ def create_animated_plot(game_events, model_type):
 
     # Calculate x-axis range dynamically
     min_time = min(game_events["time_remaining"])
+    # Adjust min_time to next lowest multiple of -300 (5 minutes) for clean OT periods
+    if min_time < 0:
+        min_time = -300 * (abs(min_time) // 300 + 1)
     max_time = 3600
+
+    # Create dynamic OT tick values and labels based on min_time
+    base_ticks = [3600, 2700, 1800, 900, 0, -900, -1800]  # Regular time ticks
+    base_labels = ['60:00', '45:00', '30:00', '15:00', '0:00', '15:00OT', '30:00OT']
+    
+    # Add OT ticks if needed
+    if min_time < 0:
+        ot_period = 1
+        current_time = -300
+        while current_time >= min_time:
+            base_ticks.append(current_time)
+            minutes = abs(current_time) // 60
+            base_labels.append(f'OT{ot_period} {minutes}:00')
+            current_time -= 300
+            if current_time % 1200 == 0:  # Every 20 minutes, new OT period
+                ot_period += 1
 
     # Update layout
     fig.update_layout(
         title=f"{model_type} Live Win Probability (Game {game_events['Game_Id'].iloc[0]})",
-        xaxis_title="Time Remaining (seconds)",
+        xaxis_title="Time Remaining (MM:SS)",
         yaxis_title="Win Probability",
         xaxis=dict(
-            range=[max_time, min_time],  # Dynamic range based on data
-            ticktext=['60:00', '45:00', '30:00', '15:00', '0:00', 'OT 5:00', 'OT 10:00', 'OT 15:00', 'OT 20:00'],
-            tickvals=[3600, 2700, 1800, 900, 0, -300, -600, -900, -1200],
+            range=[max_time, min_time],
+            ticktext=base_labels,
+            tickvals=base_ticks,
             tickmode='array'
         ),
         yaxis=dict(range=[0, 1]),
         template="plotly_white",
+        # Add grid lines
+        xaxis_showgrid=True,
+        yaxis_showgrid=True,
+        xaxis_gridcolor='lightgray',
+        yaxis_gridcolor='lightgray',
         sliders=[{
             "currentvalue": {"prefix": "Time: "},
             "pad": {"t": 50},
