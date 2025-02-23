@@ -13,3 +13,4 @@ streamlit
 plotly
 hockey-rink
 graphdatascience
+openai
