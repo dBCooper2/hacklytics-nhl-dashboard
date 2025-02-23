@@ -18,13 +18,13 @@ with col1:
     pass
 with col2:
     if st.button('GrittyLLM'):
-        st.switch_page('pages/gritty-llm')
+        st.switch_page('pages/gritty-llm.py')
 with col3:
     if st.button('Win Probability'):
-        st.switch_page('wp-model')
+        st.switch_page('wp-model.py')
 with col4:
     if st.button('Graph Analytics'):
-        st.switch_page('pages/pass-influence')
+        st.switch_page('pages/pass-influence.py')
 with col5:
     pass
 
@@ -32,10 +32,10 @@ with col6:
     pass
 with col7:
     if st.button('Model Evaluation'):
-        st.switch_page('pages/model-eval')
+        st.switch_page('pages/model-eval.py')
 with col8:
     if st.button('Data Dictionary'):
-        st.switch_page('pages/data-dict')
+        st.switch_page('pages/data-dict.py')
 with col9:
     pass
 
