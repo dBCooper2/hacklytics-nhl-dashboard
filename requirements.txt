@@ -17,3 +17,4 @@ openai
 pyvis
 streamlit-extras
 gdown
+boto3
