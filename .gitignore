@@ -182,3 +182,13 @@ notebooks/nhl_pbp20192020.csv
 notebooks/roster20192020.csv
 notebooks/nhl_pbp20212022.csv
 notebooks/sample_shot_pbp.csv
+notebooks/allPlayersLookup.csv
+notebooks/game_shots_20116.csv
+notebooks/neo4j-setup.ipynb
+notebooks/augmenting-game-shots.ipynb
+notebooks/augmenting-game-shots2.ipynb
+notebooks/merge-game-shots-player-info.ipynb
+notebooks/sample_game_shots.csv
+notebooks/skaters_2022.csv
+notebooks/edm_passing_network.html
+notebooks/game_shots_21006.csv
