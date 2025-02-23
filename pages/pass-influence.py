@@ -355,5 +355,5 @@ for (player, influence_score) in ranked_players:
     df = pd.DataFrame({'Player':[player], 'PassingInfluence':[influence_score]})
     ranked_df = pd.concat([ranked_df, df], ignore_index=True)
 
-st.subheader('Static DataFrame (st.dataframe)')
+st.subheader('Players and Passing Influence')
 st.dataframe(ranked_df)
