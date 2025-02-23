@@ -42,6 +42,8 @@ MANIFEST
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
+.tmp.drivedownload/
+.tmp.driveupload/
 
 # Unit test / coverage reports
 htmlcov/
