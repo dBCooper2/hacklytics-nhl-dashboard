@@ -21,7 +21,7 @@ with col2:
         st.switch_page('pages/gritty-llm.py')
 with col3:
     if st.button('Win Probability'):
-        st.switch_page('wp-model.py')
+        st.switch_page('pages/wp-model.py')
 with col4:
     if st.button('Graph Analytics'):
         st.switch_page('pages/pass-influence.py')
