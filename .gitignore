@@ -190,3 +190,5 @@ notebooks/augmenting-game-shots2.ipynb
 notebooks/merge-game-shots-player-info.ipynb
 notebooks/sample_game_shots.csv
 notebooks/skaters_2022.csv
+notebooks/edm_passing_network.html
+notebooks/game_shots_21006.csv
