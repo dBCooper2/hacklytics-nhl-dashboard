@@ -30,7 +30,7 @@ def create_game_visualization(game_events, model, model_type="XGBoost", get_prob
     st.plotly_chart(fig, use_container_width=True)
 
     # Display events table
-    display_events_table(game_events, model_type)
+    # display_events_table(game_events, model_type)
 
 def display_game_stats(game_events):
     """Display game statistics in a two-column layout"""
@@ -90,11 +90,30 @@ def create_animated_plot(game_events, model_type):
         xaxis=dict(range=[3600, 0]),
         yaxis=dict(range=[0, 1]),
         template="plotly_white",
+        sliders=[{
+            "currentvalue": {"prefix": "Time: "},
+            "pad": {"t": 50},
+            "len": 1,
+            "x": 0,
+            "y": 0,
+            "steps": [
+                {
+                    "args": [
+                        [f"frame{k}"],
+                        {"frame": {"duration": 100, "redraw": True},
+                         "mode": "immediate",
+                         "transition": {"duration": 0}}
+                    ],
+                    "label": str(game_events["time_remaining"].iloc[k]),
+                    "method": "animate"
+                } for k in range(len(frames))
+            ]
+        }],
         updatemenus=[{
             "type": "buttons",
             "showactive": False,
-            "x": 0.1,
-            "y": 1.1,
+            "x": .5,
+            "y": -1.5,
             "buttons": [
                 {
                     "label": "Play",
@@ -120,25 +139,6 @@ def create_animated_plot(game_events, model_type):
                         }
                     ]
                 }
-            ]
-        }],
-        sliders=[{
-            "currentvalue": {"prefix": "Time: "},
-            "pad": {"t": 50},
-            "len": 0.9,
-            "x": 0.1,
-            "y": 0,
-            "steps": [
-                {
-                    "args": [
-                        [f"frame{k}"],
-                        {"frame": {"duration": 100, "redraw": True},
-                         "mode": "immediate",
-                         "transition": {"duration": 0}}
-                    ],
-                    "label": str(game_events["time_remaining"].iloc[k]),
-                    "method": "animate"
-                } for k in range(len(frames))
             ]
         }]
     )

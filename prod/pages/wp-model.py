@@ -32,11 +32,11 @@ try:
         st.session_state.model_loaded = True
 
     # Game selector
-    available_games = sorted(wp_df['Game_Id'].unique())
+    available_games = sorted(wp_df['game_title'].unique())
     game_id = st.selectbox("Select a game:", available_games)
 
     # Get game data
-    game_events = wp_df[wp_df["Game_Id"] == game_id].sort_values(by="time_remaining", ascending=False)
+    game_events = wp_df[wp_df["game_title"] == game_id].sort_values(by="time_remaining", ascending=False)
 
     # Create tabs for different visualizations
     tab1, tab2 = st.tabs(["XGBoost Model", "Logistic Regression Model"])

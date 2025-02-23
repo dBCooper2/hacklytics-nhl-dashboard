@@ -3,6 +3,7 @@ import pandas as pd
 from joblib import load
 import gdown
 import xgboost as xgb
+import streamlit as st
 
 def download_models():
     """Downloads the pre-trained models from Google Drive"""
@@ -30,6 +31,28 @@ def get_prepped_data()->dict:
     pbp = pd.read_csv(pbp_path)
     shifts = pd.read_csv(shifts_path)
 
+    # Add Game Title for Streamlit
+    nhl_teams = {
+        "ANA": "Anaheim Ducks", "ARI": "Arizona Coyotes", "BOS": "Boston Bruins",
+        "BUF": "Buffalo Sabres", "CGY": "Calgary Flames", "CAR": "Carolina Hurricanes",
+        "CHI": "Chicago Blackhawks", "COL": "Colorado Avalanche", "CBJ": "Columbus Blue Jackets",
+        "DAL": "Dallas Stars", "DET": "Detroit Red Wings", "EDM": "Edmonton Oilers",
+        "FLA": "Florida Panthers", "LAK": "Los Angeles Kings", "MIN": "Minnesota Wild",
+        "MTL": "Montreal Canadiens", "NSH": "Nashville Predators", "NJD": "New Jersey Devils",
+        "NYI": "New York Islanders", "NYR": "New York Rangers", "OTT": "Ottawa Senators",
+        "PHI": "Philadelphia Flyers", "PIT": "Pittsburgh Penguins", "SJS": "San Jose Sharks",
+        "SEA": "Seattle Kraken", "STL": "St. Louis Blues", "TBL": "Tampa Bay Lightning",
+        "TOR": "Toronto Maple Leafs", "VAN": "Vancouver Canucks", "VGK": "Vegas Golden Knights",
+        "WSH": "Washington Capitals", "WPG": "Winnipeg Jets"
+    }
+
+    # Map the tri-codes to full team names
+    pbp["Away_Team_Full"] = pbp["Away_Team"].map(nhl_teams)
+    pbp["Home_Team_Full"] = pbp["Home_Team"].map(nhl_teams)
+
+    # Create the 'game_title' column using f-strings
+    pbp["game_title"] = pbp.apply(lambda row: f"{row['Away_Team_Full']} at {row['Home_Team_Full']} - Game {row['Game_Id']}", axis=1)
+
     # Preparing Data
     pbp['home_max_goal'] = pbp['Home_Score'].groupby(pbp['Game_Id']).transform('max')
     pbp['away_max_goal'] = pbp['Away_Score'].groupby(pbp['Game_Id']).transform('max')
@@ -51,8 +74,9 @@ def get_prepped_data()->dict:
     pbp.rename(columns={'Duration': 'ice_time'}, inplace=True)
     pbp['ice_time'] = pbp['ice_time'].fillna(0)
 
+
     # Create final dataframe
-    wp_df = pbp[['Game_Id', 'p1_name', 'Ev_Team', 'time_remaining', 'score_diff', 'skater_diff', 'goalie_pulled', 'ice_time', 'win']]
+    wp_df = pbp[['Game_Id', 'game_title', 'p1_name', 'Ev_Team', 'time_remaining', 'score_diff', 'skater_diff', 'goalie_pulled', 'ice_time', 'win']]
     wp_df = wp_df.dropna()
 
     return {'wp_df': wp_df}
