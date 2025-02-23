@@ -20,19 +20,25 @@ def load_pickle_from_github(url):
 def download_models():
     """Downloads the pre-trained models from Google Drive"""
     # LR Model Download
-    lr_file_id = "11BMLszgKfN1_DFucS6Ihzlz4b6J3IdMT"
-    lr_url = f"https://drive.google.com/uc?id={lr_file_id}"
-    gdown.download(lr_url, "models/logistic_model.pkl", quiet=False)
+    # lr_file_id = "11BMLszgKfN1_DFucS6Ihzlz4b6J3IdMT"
+    # lr_url = f"https://drive.google.com/uc?id={lr_file_id}"
+    # gdown.download(lr_url, "models/logistic_model.pkl", quiet=False)
     
     # XGBoost Model Download
-    xgb_file_id = "1lN_wSnZ6IIr000904ARoDtLuPzAplygE"  # Replace with your XGBoost model file ID
-    xgb_url = f"https://drive.google.com/uc?id={xgb_file_id}"
-    gdown.download(xgb_url, "models/xgboost_model.pkl", quiet=False)
+    # xgb_file_id = "1lN_wSnZ6IIr000904ARoDtLuPzAplygE"  # Replace with your XGBoost model file ID
+    # xgb_url = f"https://drive.google.com/uc?id={xgb_file_id}"
+    # gdown.download(xgb_url, "models/xgboost_model.pkl", quiet=False)
 
     # Random Forest
-    rf_file_id = "1uwSZFJbJl0wE6gCN1sASikMZ1RnhdRQ4"  # Replace with your XGBoost model file ID
-    rf_url = f"https://drive.google.com/uc?id={rf_file_id}"
-    gdown.download(rf_url, "models/rf_model.pkl", quiet=False)
+    # rf_file_id = "1uwSZFJbJl0wE6gCN1sASikMZ1RnhdRQ4"  # Replace with your XGBoost model file ID
+    # rf_url = f"https://drive.google.com/uc?id={rf_file_id}"
+    # gdown.download(rf_url, "models/rf_model.pkl", quiet=False)
+    lr_url = 'https://raw.githubusercontent.com/dBCooper2/hacklytics-nhl-dashboard/main/pkl_files/nhl_pbp20222023.pkl'
+    xgb_url = 'https://raw.githubusercontent.com/dBCooper2/hacklytics-nhl-dashboard/main/pkl_files/nhl_shifts20222023.pkl'
+
+    lr = load_pickle_from_github(lr_url)
+    xgb = load_pickle_from_github(xgb_url)
+
 
 def download_csvs():
     # PBP Data Download
@@ -145,7 +151,9 @@ def get_prepped_data()->dict:
 def get_lr_model():
     """Load the pre-trained logistic regression model"""
     try:
-        model = load('logistic_model.pkl')
+        lr_url = 'https://raw.githubusercontent.com/dBCooper2/hacklytics-nhl-dashboard/main/pkl_files/nhl_pbp20222023.pkl'
+        model = load_pickle_from_github(lr_url)
+        # model = load('logistic_model.pkl')
     except FileNotFoundError:
         print("LR Model not found locally, downloading from Google Drive...")
         download_models()
@@ -171,7 +179,9 @@ def get_lr_game_probabilities(game_events, model):
 def get_xgb_model():
     """Load the pre-trained XGBoost model"""
     try:
-        model = load('xgboost_model.pkl')
+        xgb_url = 'https://raw.githubusercontent.com/dBCooper2/hacklytics-nhl-dashboard/main/pkl_files/nhl_shifts20222023.pkl'
+        model = load_pickle_from_github(xgb_url)
+        # model = load('xgboost_model.pkl')
     except FileNotFoundError:
         print("XGBoost Model not found locally, downloading from Google Drive...")
         download_models()
