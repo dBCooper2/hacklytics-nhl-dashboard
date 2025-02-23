@@ -31,8 +31,9 @@ def get_prepped_data()->dict:
     pbp_path = '/Users/dB/Documents/repos/github/hacklytics-nhl-dashboard/.data/nhl_pbp20222023.csv'
     shifts_path = '/Users/dB/Documents/repos/github/hacklytics-nhl-dashboard/.data/nhl_shifts20222023.csv'
 
-    pbp_file_id = '15Dl_5wHDwzo-gIONyGuB4WXhhw3J-caI'
-    shifts_file_id = '1rdbu-8ErqmidO5my72wEohsFxrYT7GpZ'
+
+    pbp_file_id = '1rdbu-8ErqmidO5my72wEohsFxrYT7GpZ'
+    shifts_file_id = '1rtM3Mw8pFc9kZSs2p8XQR_GZfcK6HHkQ'
 
     # Read in Data
     pbp = pd.read_csv(f"https://drive.google.com/uc?id={pbp_file_id}", encoding='utf-8')
