@@ -34,26 +34,33 @@ def create_game_visualization(game_events, model, model_type="XGBoost", get_prob
 
 def display_game_stats(game_events):
     """Display game statistics in a two-column layout"""
-    col1, col2 = st.columns(2)
+    col1, col2, col3, col4 = st.columns(4)
 
     with col1:
         st.metric("Initial Win Probability", 
                 f"{game_events['win_probability'].iloc[0]:.3f}")
+    with col2:
         st.metric("Final Win Probability", 
                 f"{game_events['win_probability'].iloc[-1]:.3f}")
 
-    with col2:
+    with col3:
         actual_outcome = "Win" if game_events['win'].iloc[0] == 1 else "Loss"
         st.metric("Actual Outcome", actual_outcome)
+    with col4:
         st.metric("Final Score Differential", 
                 f"{game_events['score_diff'].iloc[-1]}")
 
 def create_animated_plot(game_events, model_type):
-    """Create animated plotly figure for win probability"""
+    """Create animated plotly figure for win probability with overtime support"""
     fig = go.Figure()
 
     # Set color based on model type
-    line_color = "blue" if model_type == "XGBoost" else "green"
+    if model_type == "XGBoost":
+        line_color = "#5D100A" 
+    elif model_type == "Logistic Regression":
+        line_color = "#154734" 
+    else:
+        line_color = "blue"
 
     # Add initial point
     fig.add_trace(
@@ -82,12 +89,21 @@ def create_animated_plot(game_events, model_type):
         )
     fig.frames = frames
 
+    # Calculate x-axis range dynamically
+    min_time = min(game_events["time_remaining"])
+    max_time = 3600
+
     # Update layout
     fig.update_layout(
         title=f"{model_type} Live Win Probability (Game {game_events['Game_Id'].iloc[0]})",
         xaxis_title="Time Remaining (seconds)",
         yaxis_title="Win Probability",
-        xaxis=dict(range=[3600, 0]),
+        xaxis=dict(
+            range=[max_time, min_time],  # Dynamic range based on data
+            ticktext=['60:00', '45:00', '30:00', '15:00', '0:00', 'OT 5:00', 'OT 10:00', 'OT 15:00', 'OT 20:00'],
+            tickvals=[3600, 2700, 1800, 900, 0, -300, -600, -900, -1200],
+            tickmode='array'
+        ),
         yaxis=dict(range=[0, 1]),
         template="plotly_white",
         sliders=[{

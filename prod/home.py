@@ -18,7 +18,7 @@ with col1:
     pass
 with col2:
     if st.button('GrittyLLM'):
-        st.switch_page('pages/grittyllm')
+        st.switch_page('pages/gritty-llm')
 with col3:
     if st.button('Win Probability'):
         st.switch_page('wp-model')

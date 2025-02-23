@@ -31,6 +31,21 @@ def get_prepped_data()->dict:
     pbp = pd.read_csv(pbp_path)
     shifts = pd.read_csv(shifts_path)
 
+    pbp = pbp.replace({
+    'Home_Team': {
+        'L.A': 'LAK',
+        'S.J': 'SJS',
+        'N.J': 'NJD',
+        'T.B': 'TBL'
+    },
+    'Away_Team': {
+        'L.A': 'LAK',
+        'S.J': 'SJS',
+        'N.J': 'NJD',
+        'T.B': 'TBL'
+    }
+})
+
     # Add Game Title for Streamlit
     nhl_teams = {
         "ANA": "Anaheim Ducks", "ARI": "Arizona Coyotes", "BOS": "Boston Bruins",
@@ -60,7 +75,7 @@ def get_prepped_data()->dict:
 
     # Fix Time
     pbp['total_seconds_elapsed'] = ((pbp['Period'] - 1) * 1200) + pbp["Seconds_Elapsed"]
-    pbp['time_remaining'] = 3600 - pbp['total_seconds_elapsed']
+    pbp['time_remaining'] = 3600 - pbp['total_seconds_elapsed'].apply(lambda x: 3600 - x if x >= 3600 else -(x-3600))
     
     # Calculate Features
     pbp['score_diff'] = pbp['Home_Score'] - pbp['Away_Score']
