@@ -188,7 +188,7 @@ def get_prepped_data_rf():
 
 
     # Create final dataframe
-    wp_df = pbp[['Game_Id', 'game_title', 'p1_name', 'Ev_Team', 'time_remaining', 'score_diff', 'skater_diff', 'goalie_pulled', 'ice_time', 'win']]
+    wp_df = pbp[['Game_Id', 'game_title', 'power_play', 'p1_name', 'Ev_Team', 'time_remaining', 'score_diff', 'skater_diff', 'goalie_pulled', 'ice_time', 'win']]
     wp_df = wp_df.dropna()
 
     return {'wp_df': wp_df}
