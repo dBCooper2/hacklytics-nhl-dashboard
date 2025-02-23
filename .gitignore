@@ -4,6 +4,7 @@
 data/
 # Streamlit Secrets (shhhh)
 .streamlit/
+models/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
