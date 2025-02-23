@@ -38,8 +38,8 @@ with col8:
 with col9:
     pass
 
-# st.image('https://raw.githubusercontent.com/dBCooper2/hacklytics-nhl-dashboard/main/site-design/gritty-no-bg.png')
-st.image('/Users/dB/Documents/repos/github/hacklytics-nhl-dashboard/site-design/gritty-no-bg2.png')
+st.image('https://raw.githubusercontent.com/dBCooper2/hacklytics-nhl-dashboard/main/site-design/gritty-no-bg.png')
+# st.image('/Users/dB/Documents/repos/github/hacklytics-nhl-dashboard/site-design/gritty-no-bg2.png')
 
 
 
