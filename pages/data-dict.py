@@ -6,20 +6,8 @@ st.title("Hockey Play by Play Data Dictionary!")
 st.write("Feel free to ask GrittyLM any questions you have!")
 
 # Create a clickable button that navigates to the specified URL in a new tab
-st.markdown(
-    """
-    <a href="https://www.example.com" target="_blank">
-        <button style="background-color: #4CAF50; 
-                        color: white; 
-                        padding: 0.5em 1em; 
-                        border: none; 
-                        cursor: pointer;">
-            Ask a question
-        </button>
-    </a>
-    """,
-    unsafe_allow_html=True
-)
+if st.button('Talk to Gritty!'):
+    st.switch_page('pages/gritty-llm.py')
 
 # Present the data dictionary as Markdown
 st.markdown(

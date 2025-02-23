@@ -39,5 +39,5 @@ with col8:
 with col9:
     pass
 
-
+st.image('site-design/gritty-no-bg2.png')
 
