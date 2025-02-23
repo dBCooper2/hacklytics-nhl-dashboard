@@ -22,22 +22,34 @@ def download_models():
     rf_url = f"https://drive.google.com/uc?id={rf_file_id}"
     gdown.download(rf_url, "models/rf_model.pkl", quiet=False)
 
+def download_csvs():
+    # PBP Data Download
+    pbp_file_id = '1rdbu-8ErqmidO5my72wEohsFxrYT7GpZ'  # This is set to public and editor
+    pbp_url = f"https://drive.google.com/uc?id={pbp_file_id}"
+    gdown.download(pbp_url, "data/nhl_pbp20222023.csv", quiet=False)
+    
+    # Shifts Data Download
+    shifts_file_id = '1rtM3Mw8pFc9kZSs2p8XQR_GZfcK6HHkQ'  # Same with this one
+    shifts_url = f"https://drive.google.com/uc?id={shifts_file_id}"
+    gdown.download(shifts_url, "data/nhl_shifts20222023.csv", quiet=False)
+
 def get_prepped_data()->dict:
     """
     Accesses Data and Preps it for Model Predictions
     Returns a dictionary with processed dataframes
     """
     # Data Paths :: CHANGE TO YOUR DATA PATHS
-    pbp_path = '/Users/dB/Documents/repos/github/hacklytics-nhl-dashboard/.data/nhl_pbp20222023.csv'
-    shifts_path = '/Users/dB/Documents/repos/github/hacklytics-nhl-dashboard/.data/nhl_shifts20222023.csv'
 
-
-    pbp_file_id = '1rdbu-8ErqmidO5my72wEohsFxrYT7GpZ'
-    shifts_file_id = '1rtM3Mw8pFc9kZSs2p8XQR_GZfcK6HHkQ'
-
-    # Read in Data
-    pbp = pd.read_csv(f"https://drive.google.com/uc?id={pbp_file_id}", encoding='utf-8')
-    shifts = pd.read_csv(f"https://drive.google.com/uc?id={shifts_file_id}", encoding='utf-8')
+    try:
+        # Try to read the files
+        pbp = pd.read_csv("data/nhl_pbp20222023.csv")
+        shifts = pd.read_csv("data/nhl_shifts20222023.csv")
+    except FileNotFoundError:
+        # If files don't exist, download them
+        print("Data files not found locally, downloading from Google Drive...")
+        download_data()
+        pbp = pd.read_csv("nhl_pbp20222023.csv")
+        shifts = pd.read_csv("nhl_shifts20222023.csv")
 
     pbp = pbp.replace({
     'Home_Team': {
