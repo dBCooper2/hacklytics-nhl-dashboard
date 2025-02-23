@@ -9,7 +9,7 @@ with col1:
 
 st.title("GrittyLLM - The Best Hockey AI")
 
-key = st.secrets["API_KEY"]
+key = st.secrets["OPEN_API_KEY"]
 client = OpenAI(api_key=key)
 
 system_prompt = """
