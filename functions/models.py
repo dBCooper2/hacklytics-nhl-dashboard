@@ -32,7 +32,7 @@ def download_csvs():
     shifts_file_id = '1rtM3Mw8pFc9kZSs2p8XQR_GZfcK6HHkQ'  # Same with this one
     # shifts_url = f"https://drive.google.com/uc?id={shifts_file_id}"
     shifts = gdown.download(id=shifts_file_id, output=None, quiet=False)
-
+    if pbp != None and shifts != None
     return pbp, shifts
 
 def get_prepped_data()->dict:
@@ -56,19 +56,19 @@ def get_prepped_data()->dict:
         shifts = pd.read_csv("/mount/src/hacklytics-nhl-dashboard/nhl_shifts20222023.csv")
 
     pbp = pbp.replace({
-    'Home_Team': {
-        'L.A': 'LAK',
-        'S.J': 'SJS',
-        'N.J': 'NJD',
-        'T.B': 'TBL'
-    },
-    'Away_Team': {
-        'L.A': 'LAK',
-        'S.J': 'SJS',
-        'N.J': 'NJD',
-        'T.B': 'TBL'
-    }
-})
+        'Home_Team': {
+            'L.A': 'LAK',
+            'S.J': 'SJS',
+            'N.J': 'NJD',
+            'T.B': 'TBL'
+        },
+        'Away_Team': {
+            'L.A': 'LAK',
+            'S.J': 'SJS',
+            'N.J': 'NJD',
+            'T.B': 'TBL'
+        }
+    })
 
     # Add Game Title for Streamlit
     nhl_teams = {
