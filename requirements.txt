@@ -13,4 +13,8 @@ streamlit
 plotly
 hockey-rink
 graphdatascience
+<<<<<<< HEAD
 openai
+=======
+pyvis
+>>>>>>> 6e86e55384ba52734634336b4ad46f674d14a7e7
