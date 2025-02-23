@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #FFEFCF;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "font": {"color": "#1A1815"}, "id": "Victor Ejdsell", "jersey_num": 17.0, "label": "Victor Ejdsell", "player_id": "8480153", "shape": "dot", "size": 10, "team": "CHI", "type": "player"}, {"color": "#97c2fc", "font": {"color": "#1A1815"}, "id": "Caleb Jones", "jersey_num": 82.0, "label": "Caleb Jones", "player_id": "8478452.0", "shape": "dot", "size": 10, "team": "CHI", "type": "player"}, {"color": "#97c2fc", "font": {"color": "#1A1815"}, "id": "Matt Carey", "jersey_num": 25.0, "label": "Matt Carey", "player_id": "8477836.0", "shape": "dot", "size": 10, "team": "CHI", "type": "player"}, {"color": "#97c2fc", "font": {"color": "#1A1815"}, "id": "Spencer Abbott", "jersey_num": 24.0, "label": "Spencer Abbott", "player_id": "8476805", "shape": "dot", "size": 10, "team": "CHI", "type": "player"}, {"color": "#97c2fc", "font": {"color": "#1A1815"}, "id": "Andreas Athanasiou", "jersey_num": 89.0, "label": "Andreas Athanasiou", "player_id": "8476960.0", "shape": "dot", "size": 10, "team": "CHI", "type": "player"}, {"color": "#97c2fc", "font": {"color": "#1A1815"}, "id": "Sean O\u0027Donnell", "jersey_num": 6.0, "label": "Sean O\u0027Donnell", "player_id": "8458637", "shape": "dot", "size": 10, "team": "CHI", "type": "player"}, {"color": "#97c2fc", "font": {"color": "#1A1815"}, "id": "Patrick Kane", "jersey_num": 88.0, "label": "Patrick Kane", "player_id": "8474141", "shape": "dot", "size": 10, "team": "CHI", "type": "player"}, {"color": "#97c2fc", "font": {"color": "#1A1815"}, "id": "Jonathan Toews", "jersey_num": 19.0, "label": "Jonathan Toews", "player_id": "8473604", "shape": "dot", "size": 10, "team": "CHI", "type": "player"}, {"color": "#97c2fc", "font": {"color": "#1A1815"}, "id": "Seth Jones", "jersey_num": 4.0, "label": "Seth Jones", "player_id": "8477495.0", "shape": "dot", "size": 10, "team": "CHI", "type": "player"}, {"color": "#97c2fc", "font": {"color": "#1A1815"}, "id": "Michal Rozsival", "jersey_num": 32.0, "label": "Michal Rozsival", "player_id": "8465058.0", "shape": "dot", "size": 10, "team": "CHI", "type": "player"}, {"color": "#97c2fc", "font": {"color": "#1A1815"}, "id": "Daniel Carcillo", "jersey_num": 13.0, "label": "Daniel Carcillo", "player_id": "8470666.0", "shape": "dot", "size": 10, "team": "CHI", "type": "player"}, {"color": "#97c2fc", "font": {"color": "#1A1815"}, "id": "Cody Franson", "jersey_num": 11.0, "label": "Cody Franson", "player_id": "8471742.0", "shape": "dot", "size": 10, "team": "CHI", "type": "player"}, {"color": "#97c2fc", "font": {"color": "#1A1815"}, "id": "Steve Montador", "jersey_num": 5.0, "label": "Steve Montador", "player_id": "8468927.0", "shape": "dot", "size": 10, "team": "CHI", "type": "player"}, {"color": "#97c2fc", "font": {"color": "#1A1815"}, "id": "MacKenzie Entwistle", "jersey_num": 58.0, "label": "MacKenzie Entwistle", "player_id": "8480025", "shape": "dot", "size": 10, "team": "CHI", "type": "player"}, {"color": "#97c2fc", "font": {"color": "#1A1815"}, "id": "Kim Johnsson", "jersey_num": 8.0, "label": "Kim Johnsson", "player_id": "8460770", "shape": "dot", "size": 10, "team": "CHI", "type": "player"}, {"color": "#97c2fc", "font": {"color": "#1A1815"}, "id": "Rem Pitlick", "jersey_num": 16.0, "label": "Rem Pitlick", "player_id": "8479514.0", "shape": "dot", "size": 10, "team": "CHI", "type": "player"}, {"color": "#97c2fc", "font": {"color": "#1A1815"}, "id": "Philipp Kurashev", "jersey_num": 23.0, "label": "Philipp Kurashev", "player_id": "8480798.0", "shape": "dot", "size": 10, "team": "CHI", "type": "player"}, {"color": "#97c2fc", "font": {"color": "#1A1815"}, "id": "Viktor Svedberg", "jersey_num": 43.0, "label": "Viktor Svedberg", "player_id": "8477300", "shape": "dot", "size": 10, "team": "CHI", "type": "player"}, {"color": "#97c2fc", "font": {"color": "#1A1815"}, "id": "Radek Smolenak", "jersey_num": 52.0, "label": "Radek Smolenak", "player_id": "8471736", "shape": "dot", "size": 10, "team": "CHI", "type": "player"}]);
+                  edges = new vis.DataSet([{"color": "#5D100A", "from": "Victor Ejdsell", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Caleb Jones", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Victor Ejdsell", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Matt Carey", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Victor Ejdsell", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Spencer Abbott", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Victor Ejdsell", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Andreas Athanasiou", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Sean O\u0027Donnell", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Patrick Kane", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Andreas Athanasiou", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Patrick Kane", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Jonathan Toews", "relationship_type": "PASSES_TO", "title": "Passes: 4", "to": "Patrick Kane", "weight": 4, "width": 4}, {"color": "#5D100A", "from": "Jonathan Toews", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Seth Jones", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Michal Rozsival", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Sean O\u0027Donnell", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Patrick Kane", "relationship_type": "PASSES_TO", "title": "Passes: 5", "to": "Seth Jones", "weight": 5, "width": 5}, {"color": "#5D100A", "from": "Patrick Kane", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Daniel Carcillo", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Patrick Kane", "relationship_type": "PASSES_TO", "title": "Passes: 3", "to": "Cody Franson", "weight": 3, "width": 3}, {"color": "#5D100A", "from": "Patrick Kane", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Steve Montador", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "MacKenzie Entwistle", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Kim Johnsson", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Caleb Jones", "relationship_type": "PASSES_TO", "title": "Passes: 2", "to": "Andreas Athanasiou", "weight": 2, "width": 2}, {"color": "#5D100A", "from": "Caleb Jones", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Sean O\u0027Donnell", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Rem Pitlick", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Cody Franson", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Spencer Abbott", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Philipp Kurashev", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Spencer Abbott", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Matt Carey", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Spencer Abbott", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Viktor Svedberg", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Philipp Kurashev", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Seth Jones", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Cody Franson", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Daniel Carcillo", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Cody Franson", "relationship_type": "PASSES_TO", "title": "Passes: 2", "to": "Jonathan Toews", "weight": 2, "width": 2}, {"color": "#5D100A", "from": "Seth Jones", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Cody Franson", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Matt Carey", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Viktor Svedberg", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Matt Carey", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Rem Pitlick", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Steve Montador", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Victor Ejdsell", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Steve Montador", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Matt Carey", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Steve Montador", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Spencer Abbott", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Daniel Carcillo", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Andreas Athanasiou", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Daniel Carcillo", "relationship_type": "PASSES_TO", "title": "Passes: 2", "to": "Jonathan Toews", "weight": 2, "width": 2}, {"color": "#5D100A", "from": "Daniel Carcillo", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Seth Jones", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Daniel Carcillo", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Caleb Jones", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Viktor Svedberg", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Seth Jones", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Viktor Svedberg", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Caleb Jones", "weight": 1, "width": 1}, {"color": "#5D100A", "from": "Viktor Svedberg", "relationship_type": "PASSES_TO", "title": "Passes: 1", "to": "Radek Smolenak", "weight": 1, "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"font": {"size": 14}, "color": {"background": "#BBACA0"}}, "edges": {"smooth": {"type": "continuous"}, "arrows": {"to": {"enabled": true, "scaleFactor": 0.5}}}, "physics": {"forceAtlas2Based": {"gravitationalConstant": -50, "centralGravity": 0.01, "springLength": 200, "springConstant": 0.08}, "solver": "forceAtlas2Based", "stabilization": {"iterations": 100}}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
