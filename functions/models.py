@@ -45,8 +45,8 @@ def get_prepped_data()->dict:
     try:
         # Try to read the files
         pbp, shifts = download_csvs()
-        # pbp = pd.read_csv("data/nhl_pbp20222023.csv")
-        # shifts = pd.read_csv("data/nhl_shifts20222023.csv")
+        pbp = pd.read_csv("/mount/src/hacklytics-nhl-dashboard/nhl_pbp20222023.csv")
+        shifts = pd.read_csv("/mount/src/hacklytics-nhl-dashboard/nhl_shifts20222023.csv")
     except FileNotFoundError:
         # If files don't exist, download them
         # print("Data files not found locally, downloading from Google Drive...")
