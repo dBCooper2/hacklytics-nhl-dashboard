@@ -133,8 +133,8 @@ def create_animated_plot(game_events, model_type):
         sliders=[{
             "currentvalue": {"prefix": "Time: "},
             "pad": {"t": 50},
-            "len": 1,
-            "x": 0,
+            "len": 1.1,
+            "x": -.1,
             "y": 0,
             "steps": [
                 {
