@@ -5,6 +5,18 @@ import gdown
 import xgboost as xgb
 import streamlit as st
 
+import pandas as pd
+import requests
+import io
+
+# Function to load a pickle file from GitHub LFS
+def load_pickle_from_github(url):
+    response = requests.get(url)
+    response.raise_for_status()  # Ensure we notice bad responses (e.g., 404)
+    return pd.read_pickle(io.BytesIO(response.content))
+
+
+
 def download_models():
     """Downloads the pre-trained models from Google Drive"""
     # LR Model Download
@@ -46,12 +58,13 @@ def get_prepped_data()->dict:
     # Data Paths :: CHANGE TO YOUR DATA PATHS
 
     try:
-        # Try to read the files
-        #d = download_csvs()
-        #pbp= d['pbp']
-        #shifts = d['shifts']
-        pbp = pd.read_pickle('/Users/dB/Documents/repos/github/hacklytics-nhl-dashboard/pkl_files/nhl_pbp20222023.pkl')
-        shifts = pd.read_pickle('/Users/dB/Documents/repos/github/hacklytics-nhl-dashboard/pkl_files/nhl_shifts20222023.pkl')
+        # URLs for raw pickle files (modify if necessary)
+        pbp_url = "https://raw.githubusercontent.com/dBCooper2/hacklytics-nhl-dashboard/main/pkl_files/nhl_pbp20222023.pkl"
+        shifts_url = "https://raw.githubusercontent.com/dBCooper2/hacklytics-nhl-dashboard/main/pkl_files/nhl_shifts20222023.pkl"
+
+        # Load the pickle files
+        pbp = load_pickle_from_github(pbp_url)
+        shifts = load_pickle_from_github(shifts_url)
 
         
     except FileNotFoundError:
