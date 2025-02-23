@@ -3,7 +3,7 @@
 .DS_Store
 data/
 # Streamlit Secrets (shhhh)
-.streamlit/
+.streamlit/secrets.toml
 models/*
 
 
