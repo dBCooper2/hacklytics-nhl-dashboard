@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Page config
-st.set_page_config(page_title="Model Evaluation", page_icon="📚", layout="wide")
+st.set_page_config(page_title="Model Evaluation", layout="wide")
 
 # Title
 st.title("Model Evaluation")
@@ -36,6 +36,12 @@ st.latex(r"""
 st.latex(r"""
 \text{ROC-AUC} = \int_{0}^{1} TPR \, d(FPR) = 0.7624
 """)
+
+col1, col2 = st.columns(2)
+with col1:
+    st.image("site-design/lr/logistic_confusion.png", width=500)
+with col2:
+    st.image("site-design/lr/logistic_roc.png", width=500)
 
 ## ---------------- XGBoost ---------------- ##
 st.header("XGBoost Model")
@@ -77,6 +83,12 @@ st.latex(r"""
 st.latex(r"""
 \text{ROC-AUC} = \int_{0}^{1} TPR \, d(FPR) = 0.7687
 """)
+
+col3, col4 = st.columns(2)
+with col3:
+    st.image("site-design/xgboost/xgboost_confusion.png", width=500)
+with col4:
+    st.image("site-design/xgboost/xgboost_roc.png", width=500)
 
 ## ---------------- Random Forest ---------------- ##
 st.header("Random Forest Model")
@@ -121,3 +133,8 @@ st.code("""
 weighted avg       0.73      0.73      0.73     44431
 """, language="plaintext")
 
+col5, col6 = st.columns(2)
+with col5:
+    st.image("site-design/rf/rf_confusion.png", width=500)
+with col6:
+    st.image("site-design/rf/rf_roc.png", width=500)
