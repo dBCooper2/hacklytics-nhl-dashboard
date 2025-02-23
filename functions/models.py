@@ -32,8 +32,10 @@ def download_csvs():
     shifts_file_id = '1rtM3Mw8pFc9kZSs2p8XQR_GZfcK6HHkQ'  # Same with this one
     # shifts_url = f"https://drive.google.com/uc?id={shifts_file_id}"
     shifts = gdown.download(id=shifts_file_id, output=None, quiet=False)
-    if pbp != None and shifts != None
-    return pbp, shifts
+    if pbp != None and shifts != None:
+        return pbp, shifts
+    else:
+        print("Neither File was loaded in - TR")
 
 def get_prepped_data()->dict:
     """
