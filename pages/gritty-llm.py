@@ -1,15 +1,9 @@
 import streamlit as st
 from openai import OpenAI
 
-
-col1, col2 = st.columns([0.5, 1])
-with col1:
-    if st.button("Home", use_container_width=True):
-        st.switch_page("Home")
-
 st.title("GrittyLLM - The Best Hockey AI")
 
-key = st.secrets["API_KEY"]
+key = st.secrets["openai"]["API_KEY"]
 client = OpenAI(api_key=key)
 
 system_prompt = """
