@@ -47,9 +47,12 @@ def get_prepped_data()->dict:
 
     try:
         # Try to read the files
-        d = download_csvs()
-        pbp= d['pbp']
-        shifts = d['shifts']
+        #d = download_csvs()
+        #pbp= d['pbp']
+        #shifts = d['shifts']
+        pbp = pd.read_pickle('/Users/dB/Documents/repos/github/hacklytics-nhl-dashboard/pkl_files/nhl_pbp20222023.pkl')
+        shifts = pd.read_pickle('/Users/dB/Documents/repos/github/hacklytics-nhl-dashboard/pkl_files/nhl_shifts20222023.pkl')
+
         
     except FileNotFoundError:
         # If files don't exist, download them
