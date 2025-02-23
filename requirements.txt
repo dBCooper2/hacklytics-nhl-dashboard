@@ -16,3 +16,4 @@ graphdatascience
 openai
 pyvis
 streamlit-extras
+gdown
